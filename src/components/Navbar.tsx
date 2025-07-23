@@ -46,11 +46,25 @@ const Navbar = () => {
                 </div>
 
                  {/* Mobile links */}
-                <div className='md:hidden'>
-                    <button className='text-gray-300 focus:outline-none' onClick={()=> setMenuOpen((prev) => !prev)}>
-                        {menuOpen ? <img src={close} /> : <img src={menu} />}
-                    </button>
-                </div>
+                 <div className='md:hidden flex  gap-3'>
+                    <div>
+                        {user ? (
+                            <div className='flex  justify- space-x-4'>
+                               {user.user_metadata.avatar_url && 
+                                   (<img src={user.user_metadata.avatar_url} className='w-8 h-8 rounded-full object-cover' alt='user-avatar'/>)}
+                               <button className='bg-red-500 px-3 py-1 rounded' onClick={signOut}> signOut</button>
+                            </div> )
+                            :(
+                                <button onClick={signInWithGithub} className='bg-blue-500 px-3 py-1 rounded'> sign in with github</button> 
+                        )}
+                    </div>
+
+                    
+                        <button className='text-gray-300 focus:outline-none' onClick={()=> setMenuOpen((prev) => !prev)}>
+                            {menuOpen ? <img src={close} /> : <img src={menu} />}
+                        </button>
+                    </div>
+                
             </div>
          </div>
 
