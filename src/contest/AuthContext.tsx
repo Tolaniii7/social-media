@@ -18,9 +18,14 @@ export const AuthProvider = ({children}  : {children: React.ReactNode}) => {
     // getting data about the user 
 
     useEffect(()=>{
-        supabase.auth.getSession().then(({data : {session}})=>{
-            setUser(session?.user ?? null)
-        })
+        const getSession = async ()=> {
+            const {data} = await supabase.auth.getSession()
+            // .then(({data : {session}})=>{
+                setUser(data.session?.user ?? null)
+            // })
+        }
+
+        getSession()
 
 
         // listening for any changes in the authentication 
@@ -33,6 +38,8 @@ export const AuthProvider = ({children}  : {children: React.ReactNode}) => {
         }
     }, [])
 
+
+
     const signInWithGithub = () => {
         supabase.auth.signInWithOAuth({provider:"github"})
     }
@@ -40,6 +47,13 @@ export const AuthProvider = ({children}  : {children: React.ReactNode}) => {
     const signOut = ( ) => {
         supabase.auth.signOut();
     }
+
+
+      useEffect(() => {
+        if (window.location.hash.includes('access_token')) {
+          window.history.replaceState(null, '', window.location.pathname)
+        }
+      }, [])
 
     return (
         <AuthContext.Provider value={{
